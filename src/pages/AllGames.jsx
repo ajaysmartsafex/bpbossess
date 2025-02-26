@@ -17,29 +17,21 @@ function AllGames() {
         });
     }, []);
 
-    console.log('Posts:', posts);
-    console.log('Results:', results);
-    console.log('Current Date:', currentDate);
-
     return (
         <div className='w-full py-8'>
             <Container>
                 <div className='flex flex-wrap'>
                     {posts.map((post) => {
-                        console.log('Full post object:', post);
-                        console.log('Checking gameName:', post.title); // <-- Use 'title' here
-
                         const gameResult = results.find(item =>
-                            item.date === currentDate && item.gameName === post.title // <-- Use 'title' here
+                            item.date === currentDate && item.gameName === post.title
                         );
 
-                        console.log('Found gameResult:', gameResult);
 
                         return (
                             <div key={post.$id} className='p-2 w-1/4'>
                                 <PostCard
                                     {...post}
-                                    gameName={post.title} // <-- Pass 'title' as gameName
+                                    gameName={post.title}
                                     gameResult={gameResult}
                                     currentDate={currentDate}
                                 />

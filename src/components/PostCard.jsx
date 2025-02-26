@@ -4,9 +4,6 @@ import { Link } from 'react-router-dom';
 import parse from "html-react-parser";
 
 function PostCard({ $id, featuredImage, title, gamenumber, starttime, endtime, content, gameResult, currentDate, gameName }) {
-  console.log('PostCard gameName:', gameName); // <-- Confirm it’s getting passed
-  console.log('PostCard gameResult:', gameResult)
-
   const displayNumbers = gameResult
     ? [gameResult.firstD, gameResult.secondD, gameResult.thirdD, gameResult.fourD,
     gameResult.fiveD, gameResult.sixD, gameResult.seveenD, gameResult.eightD]

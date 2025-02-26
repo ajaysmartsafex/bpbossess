@@ -18,10 +18,6 @@ const AddResultForm = (result) => {
     const games = useSelector(state => state.result.games);
     const results = useSelector(state => state.result.results);
 
-
-    console.log(games);
-    console.log(results);
-
     const [allData, setAllData] = useState(null);
 
 
@@ -53,26 +49,23 @@ const AddResultForm = (result) => {
     useEffect(() => {
         const mergedData = async () => {
             try {
-                // Fetch both results and games in parallel
+
                 const [gameData, resultData] = await Promise.all([
                     appwriteService.getGames(),
                     appwriteResult.getResults()
                 ]);
 
-                console.log("Fetched Games:", gameData);
-                console.log("Fetched Results:", resultData);
 
-                // Ensure valid data structure
                 const resultsArray = resultData?.documents || [];
                 const gamesArray = gameData?.documents || [];
 
-                // Dispatch fetched data to Redux
+
                 dispatch(setResults(resultsArray));
                 dispatch(setGames(gamesArray));
 
                 const completeData = {
-                    formattedGames: games, // Store all games
-                    formattedResults: results // Store all results
+                    formattedGames: games,
+                    formattedResults: results
                 };
 
                 setAllData(completeData);
@@ -82,11 +75,7 @@ const AddResultForm = (result) => {
 
         }
         mergedData();
-    }, [])
-
-    useEffect(() => {
-        console.log("Updated allData:", allData);
-    }, [allData]);
+    }, [allData])
 
 
     const slugTransform = useCallback((value) => {
@@ -119,7 +108,6 @@ const AddResultForm = (result) => {
                     dispatch(addResult(dbResult)); // Add to Redux store
                 }
 
-                console.log(dbResult);
                 navigate(`/result/${slugTransform(dbResult.gameName)}`); // Redirect after success
             }
         } catch (error) {

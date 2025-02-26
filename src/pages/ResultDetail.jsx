@@ -28,7 +28,6 @@ const ResultDetail = () => {
 
     const { gameName: slug } = useParams();
     const gameName = decodeURIComponent(slug);
-    console.log("Decoded gameName:", gameName);
 
     const results = useSelector((state) => state.result?.results || []);
     const [groupedResults, setGroupedResults] = useState({});
@@ -53,9 +52,6 @@ const ResultDetail = () => {
     useEffect(() => {
         if (gameName && results.length > 0) {
             const filteredResults = results.filter(result => slugTransform(result.gameName) === gameName);
-
-            console.log("All results:", results);
-            console.log("Filtered results:", filteredResults);
 
             if (filteredResults.length > 0) {
                 const grouped = filteredResults.reduce((acc, result) => {
