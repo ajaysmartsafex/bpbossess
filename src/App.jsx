@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import './App.css';
 import './assets/globle.scss';
 import authService from "./appwrite/auth";
-import { logout, rehydrateUser } from "./store/authSlice";
+import { login, logout } from "./store/authSlice";
 import { Footer, Header } from './components';
 import { Outlet } from 'react-router-dom';
 
@@ -12,25 +12,16 @@ function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userData = await authService.getCurrentUser();
-
+    authService.getCurrentUser()
+      .then((userData) => {
         if (userData) {
-          dispatch(rehydrateUser({ userData, session: userData.$id }));
+          dispatch(login({ userData }))
         } else {
-          dispatch(logout());
+          dispatch(logout())
         }
-      } catch (error) {
-        console.error('Error fetching user:', error);
-        dispatch(logout());
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUser();
-  }, [dispatch]);
+      })
+      .finally(() => setLoading(false))
+  }, [])
 
   return !loading ? (
     <div className='body_color min-h-screen flex flex-wrap content-between'>
@@ -45,4 +36,4 @@ function App() {
   ) : null
 }
 
-export default App;
+export default App
