@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import './App.css';
 import './assets/globle.scss';
 import authService from "./appwrite/auth";
-import { login, logout } from "./store/authSlice";
+import { logout, rehydrateUser } from "./store/authSlice";
 import { Footer, Header } from './components';
 import { Outlet } from 'react-router-dom';
 
@@ -15,10 +15,9 @@ function App() {
     const fetchUser = async () => {
       try {
         const userData = await authService.getCurrentUser();
-        const session = await authService.getSession();
 
-        if (userData && session) {
-          dispatch(rehydrateUser({ userData, session }));
+        if (userData) {
+          dispatch(rehydrateUser({ userData, session: userData.$id }));
         } else {
           dispatch(logout());
         }
@@ -46,4 +45,4 @@ function App() {
   ) : null
 }
 
-export default App
+export default App;
