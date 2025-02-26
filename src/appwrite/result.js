@@ -9,7 +9,7 @@ export class Result {
     databases;
 
     constructor() {
-        this.client.setEndpoint(conf.appwriteUrl).setProject(conf.appwriteProjectId);
+        this.client.setEndpoint(conf.appwriteUrl).setProject(conf.appwriteProjectId).setKey(conf.appwriteApiKey); // Add this line;
         this.databases = new Databases(this.client);
     }
 
