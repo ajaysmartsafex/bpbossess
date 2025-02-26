@@ -12,16 +12,26 @@ function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    authService.getCurrentUser()
-      .then((userData) => {
-        if (userData) {
-          dispatch(login({ userData }))
+    const fetchUser = async () => {
+      try {
+        const userData = await authService.getCurrentUser();
+        const session = await authService.getSession();
+
+        if (userData && session) {
+          dispatch(rehydrateUser({ userData, session }));
         } else {
-          dispatch(logout())
+          dispatch(logout());
         }
-      })
-      .finally(() => setLoading(false))
-  }, [])
+      } catch (error) {
+        console.error('Error fetching user:', error);
+        dispatch(logout());
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [dispatch]);
 
   return !loading ? (
     <div className='body_color min-h-screen flex flex-wrap content-between'>

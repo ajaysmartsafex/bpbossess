@@ -21,6 +21,7 @@ const authSlice = createSlice({
             state.session = null; // Clear session on logout
         },
         rehydrateUser: (state, action) => {
+            state.status = true;
             state.userData = action.payload.userData;
             state.session = action.payload.session;
         }
