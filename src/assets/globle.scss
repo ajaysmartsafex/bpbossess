@@ -107,3 +107,16 @@ main {
 .select_game {
     margin-bottom: -10px;
 }
+
+
+@media (max-width:768px) {
+    .main {
+        .flex {
+            display: block !important;
+
+            .w-1\/4 {
+                width: 100%;
+            }
+        }
+    }
+}
