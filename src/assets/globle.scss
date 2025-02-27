@@ -110,6 +110,17 @@ main {
 
 
 @media (max-width:768px) {
+    header {
+        position: relative;
+        z-index: 101;
+
+        li {
+            text-align: left;
+            margin-left: 0 !important;
+            color: #fff;
+        }
+    }
+
     .main {
         .flex {
             display: block !important;

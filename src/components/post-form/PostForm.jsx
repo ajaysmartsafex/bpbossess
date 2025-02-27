@@ -78,12 +78,12 @@ export default function PostForm({ post }) {
     }, [watch, slugTransform, setValue]);
 
     const formatInput = (value) => {
-        if (!value || typeof value !== "string") return "";
+        if (!value || typeof value !== "string") return "********";
 
-        // Remove non-numeric characters
+
         const digits = value.replace(/\D/g, "").slice(0, 8); // Max 8 characters
 
-        // Format: 3-2-3 pattern
+
         let formatted = "";
         for (let i = 0; i < digits.length; i++) {
             if (i === 3 || i === 5) {
@@ -92,7 +92,7 @@ export default function PostForm({ post }) {
             formatted += digits[i];
         }
 
-        // Add "*" if length is less than 8
+
         while (formatted.replace(/-/g, "").length < 8) {
             formatted += "*";
         }
@@ -101,12 +101,18 @@ export default function PostForm({ post }) {
     };
 
     const handleInputChange = (e) => {
-        const rawValue = e.target.value.replace(/\D/g, "").slice(0, 8); // Keep only numbers, max 8
-        const formattedValue = formatInput(rawValue); // Format the value
-        setValue("gamenumber", formattedValue, { shouldValidate: true }); // Save formatted value in `gamenumber`
+        const rawValue = e.target.value;
+        const cursorPosition = e.target.selectionStart;
+        const cleanedValue = rawValue.replace(/\D/g, "");
+        const digitsOnly = cleanedValue.slice(0, 8);
+        const formattedValue = formatInput(digitsOnly);
+        setValue("gamenumber", formattedValue, { shouldValidate: true });
+        setTimeout(() => {
+            e.target.setSelectionRange(cursorPosition, cursorPosition);
+        }, 0);
     };
 
-    // Handle start time input change
+
     const handleStartTimeChange = (e) => {
         if (isValidTime) {
             const value = e.target.value;
@@ -154,13 +160,14 @@ export default function PostForm({ post }) {
                     label="Game Number :"
                     placeholder="Enter 8-digit number"
                     className="mb-4"
+                    type="text"
                     {...register("gamenumber", { required: true })}
                     value={resultValue}
-                    onChange={handleInputChange} // Apply formatting dynamically
-                    maxLength={10} // Allows space for dashes
+                    onChange={handleInputChange}
+                    maxLength={12}
                 />
 
-                <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} />
+                {/* <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} /> */}
             </div>
             <div className="w-1/3 px-2">
                 <Input
@@ -183,7 +190,6 @@ export default function PostForm({ post }) {
                 <div className="game_time_section">
                     <Input
                         label="Start Time :"
-                        // type="time"
                         placeholder="Enter game start time"
                         className="mb-4 mr-2"
                         defaultValue=""
@@ -193,7 +199,6 @@ export default function PostForm({ post }) {
                     />
                     <Input
                         label="End Time :"
-                        // type="time"
                         placeholder="Enter game end time"
                         className="mb-4"
                         defaultValue=""

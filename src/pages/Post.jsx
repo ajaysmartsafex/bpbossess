@@ -15,7 +15,6 @@ export default function Post() {
 
     const userData = useSelector((state) => state.auth.userData);
 
-    // Ensure userData is rehydrated if null
     useEffect(() => {
         if (!userData) {
             const storedUser = JSON.parse(localStorage.getItem("persist:root"));
@@ -28,7 +27,6 @@ export default function Post() {
         }
     }, [userData, dispatch]);
 
-    // Ensure isAuthor updates only when both post and userData are available
     const isAuthor = post && userData ? post.userId === userData.$id : false;
     useEffect(() => {
         if (slug) {
@@ -38,10 +36,6 @@ export default function Post() {
             });
         } else navigate("/");
     }, [slug, navigate]);
-
-
-
-    // const isAuthor = post && userData ? post.userId === userData.$id : false;
 
     const deleteGame = () => {
         appwriteService.deleteGame(post.$id).then((status) => {

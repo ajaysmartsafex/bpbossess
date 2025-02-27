@@ -116,6 +116,11 @@ const AddResultForm = (result) => {
 
     };
 
+    const handleResultDigitChange = (fieldName) => (e) => {
+        const value = e.target.value.replace(/\D/g, "").slice(0, 1);
+        setValue(fieldName, value);
+    };
+
 
     return (
         <div className='flex items-center justify-center w-full py-8'>
@@ -157,29 +162,29 @@ const AddResultForm = (result) => {
                                 <h4 className='text-left'>Left</h4>
                                 <div className='flex justify-between columns-12'>
                                     <Input
-                                        // label="N-1: "
-                                        type="Number"
                                         placeholder="N-1"
                                         {...register("firstD", { required: false })}
                                         defaultValue=""
+                                        type="text"
                                         maxLength={1}
+                                        onChange={handleResultDigitChange("firstD")}
                                     />
 
                                     <Input
-                                        // label="N-2: "
-                                        type="Number"
                                         placeholder="N-2"
                                         {...register("secondD", { required: false })}
                                         defaultValue=""
+                                        type="text"
                                         maxLength={1}
+                                        onChange={handleResultDigitChange("secondD")}
                                     />
                                     <Input
-                                        // label="N-3: "
-                                        type="Number"
                                         placeholder="N-3"
                                         {...register("thirdD", { required: false })}
                                         defaultValue=""
+                                        type="text"
                                         maxLength={1}
+                                        onChange={handleResultDigitChange("thirdD")}
                                     />
                                 </div>
                             </div>
@@ -187,20 +192,20 @@ const AddResultForm = (result) => {
                                 <h4 className='text-left'>Mid</h4>
                                 <div className='flex justify-between columns-12'>
                                     <Input
-                                        // label="N-4: "
-                                        type="Number"
                                         placeholder="N-4"
                                         {...register("fourD", { required: false })}
                                         defaultValue=""
+                                        type="text"
                                         maxLength={1}
+                                        onChange={handleResultDigitChange("fourD")}
                                     />
                                     <Input
-                                        // label="N-5: "
-                                        type="Number"
                                         placeholder="N-5"
                                         {...register("fiveD", { required: false })}
                                         defaultValue=""
+                                        type="text"
                                         maxLength={1}
+                                        onChange={handleResultDigitChange("fiveD")}
                                     />
                                 </div>
                             </div>
@@ -209,28 +214,28 @@ const AddResultForm = (result) => {
                                 <div className='flex justify-between columns-12'>
 
                                     <Input
-                                        // label="N-6: "
-                                        type="Number"
                                         placeholder="N-6"
                                         {...register("sixD", { required: false })}
                                         defaultValue=""
+                                        type="text"
                                         maxLength={1}
+                                        onChange={handleResultDigitChange("sixD")}
                                     />
                                     <Input
-                                        // label="N-7: "
-                                        type="Number"
                                         placeholder="N-7"
                                         {...register("seveenD", { required: false })}
                                         defaultValue=""
+                                        type="text"
                                         maxLength={1}
+                                        onChange={handleResultDigitChange("seveenD")}
                                     />
                                     <Input
-                                        // label="N-8: "
-                                        type="Number"
                                         placeholder="N-8"
                                         {...register("eightD", { required: false })}
                                         defaultValue=""
+                                        type="text"
                                         maxLength={1}
+                                        onChange={handleResultDigitChange("eightD")}
                                     />
                                 </div>
                             </div>

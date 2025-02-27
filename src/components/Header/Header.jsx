@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Container, Logo, LogoutBtn } from '../index'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 function Header() {
   const authStatus = useSelector((state) => state.auth.status)
   const navigate = useNavigate()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const navItems = [
     {
@@ -50,19 +51,43 @@ function Header() {
   return (
     <header className='py-3 shadow bg-red-600 px-3'>
       <Container>
-        <nav className='flex'>
+        <nav className='flex items-center justify-between'>
           <div className='mr-4'>
             <Link to='/'>
               <Logo width='70px' />
             </Link>
           </div>
-          <ul className='flex ml-auto'>
+
+          {/* Mobile Hamburger Button */}
+          <div className='block md:hidden'>
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className='text-white focus:outline-none'>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+
+          {/* Navigation Links */}
+          <ul className={`flex ml-auto space-x-6 md:space-x-8 ${isMobileMenuOpen ? 'flex-col absolute bg-red-600 p-4 top-20 right-0 w-full md:w-auto md:flex-row md:top-auto md:right-auto' : 'hidden md:flex'}`}>
             {navItems.map((item) =>
               item.active ? (
                 <li key={item.name}>
                   <button
                     onClick={() => navigate(item.slug)}
-                    className='inline-bock px-6 py-2 duration-200 hover:bg-blue-100 rounded-full'
+                    className='inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full'
                   >{item.name}</button>
                 </li>
               ) : null

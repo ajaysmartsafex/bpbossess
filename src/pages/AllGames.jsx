@@ -20,7 +20,7 @@ function AllGames() {
     return (
         <div className='w-full py-8'>
             <Container>
-                <div className='flex flex-wrap'>
+                <div className='grid grid-cols-1 md:grid-cols-4'>
                     {posts.map((post) => {
                         const gameResult = results.find(item =>
                             item.date === currentDate && item.gameName === post.title
@@ -28,7 +28,7 @@ function AllGames() {
 
 
                         return (
-                            <div key={post.$id} className='p-2 w-1/4'>
+                            <div key={post.$id} className='p-2'>
                                 <PostCard
                                     {...post}
                                     gameName={post.title}
