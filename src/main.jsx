@@ -16,7 +16,6 @@ import Signup from './pages/Signup'
 import EditPost from "./pages/EditPost";
 import Post from "./pages/Post";
 import AllGames from "./pages/AllGames.jsx";
-import EditResultDetail from "./pages/EditResultDetail.jsx";
 import AddGameResult from './pages/AddGameResult.jsx'
 import ResultDetail from './pages/ResultDetail.jsx'
 import EditResult from './pages/EditResult.jsx'
@@ -98,7 +97,6 @@ const router = createBrowserRouter([
             },
             {
                 path: "result/:gameName",
-                // element: <EditResultDetail />
                 element: <ResultDetail />,
             },
         ],

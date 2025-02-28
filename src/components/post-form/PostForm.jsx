@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { Button, Input, RTE, Select } from "..";
+import { Button, Input, Select } from "..";
 import appwriteService from "../../appwrite/config";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -120,7 +120,7 @@ export default function PostForm({ post }) {
         }
     };
 
-    // Handle end time input change
+
     const handleEndTimeChange = (e) => {
         if (isValidTime) {
             const value = e.target.value;
@@ -165,6 +165,14 @@ export default function PostForm({ post }) {
                     value={resultValue}
                     onChange={handleInputChange}
                     maxLength={12}
+                />
+
+                <Input
+                    label="Game Owner :"
+                    placeholder="create by"
+                    className="mb-4"
+                    type="text"
+                    {...register("content", { required: true })}
                 />
 
                 {/* <RTE label="Content :" name="content" control={control} defaultValue={getValues("content")} /> */}
