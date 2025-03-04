@@ -46,6 +46,40 @@ export default function Post() {
         });
     };
 
+
+    const formatEndTime = (endtime) => {
+        if (!endtime) {
+            return "No time available";
+        }
+
+        const date = new Date(endtime);
+        const options = {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true,
+        };
+
+        return date.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", ...options });
+    };
+
+
+    const formatStartTime = (starttime) => {
+        if (!starttime) {
+            return "No time available";
+        }
+
+        const date = new Date(starttime);
+        const options = {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true,
+        };
+
+        return date.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", ...options });
+    };
+
     return post ? (
         <div className="py-8">
             <Container>
@@ -61,8 +95,8 @@ export default function Post() {
                         </div>
                         <h2 className='text-xl font-bold text-black'>Game Time</h2>
                         <div className='game_time'>
-                            <span className='start_time'>{post.starttime}</span>
-                            <span className='end_time'>{post.endtime}</span>
+                            <span className='start_time'>{formatStartTime(post.starttime)}</span>
+                            <span className='end_time'>{formatEndTime(post.endtime)}</span>
                         </div>
                         <h2 className='text-xl font-bold text-black'>Game Owner</h2>
                         <div className="browser-css">

@@ -26,6 +26,14 @@ export default function PostForm({ post }) {
 
     const submit = async (data) => {
 
+
+        if (data.starttime) {
+            data.starttime = convertToISODate(data.starttime);
+        }
+        if (data.endtime) {
+            data.endtime = convertToISODate(data.endtime);
+        }
+
         if (post) {
             const file = data.image[0] ? await appwriteService.uploadFile(data.image[0]) : null;
 
@@ -113,25 +121,38 @@ export default function PostForm({ post }) {
     };
 
 
-    const handleStartTimeChange = (e) => {
-        if (isValidTime) {
-            const value = e.target.value;
-            setValue("startTime", value);
-        }
-    };
-
-
-    const handleEndTimeChange = (e) => {
-        if (isValidTime) {
-            const value = e.target.value;
-            setValue("endTime", value);
-        }
-    };
-
-    // Simple time validation (ensures the format is HH:MM)
     const isValidTime = (time) => {
         const timePattern = /^([1-9]|1[0-2]):([0-5][0-9])\s?(AM|PM)$/;
         return timePattern.test(time);
+    };
+
+    const handleStartTimeChange = (e) => {
+        const value = e.target.value;
+        if (isValidTime(value)) {
+            setValue("starttime", value);
+        }
+    };
+
+    const handleEndTimeChange = (e) => {
+        const value = e.target.value;
+        if (isValidTime(value)) {
+            setValue("endtime", value);
+        }
+    };
+
+
+    const convertToISODate = (timeString) => {
+        const date = new Date();
+        const [time, modifier] = timeString.split(" ");
+        let [hours, minutes] = time.split(":");
+
+        hours = parseInt(hours);
+        if (modifier === "PM" && hours < 12) hours += 12;
+        if (modifier === "AM" && hours === 12) hours = 0;
+
+        date.setHours(hours, minutes, 0, 0);
+
+        return date.toISOString();
     };
 
 
@@ -195,22 +216,20 @@ export default function PostForm({ post }) {
                     </div>
                 )}
 
-                <div className="game_time_section">
+                <div className="game_time_section gap-2">
                     <Input
-                        label="Start Time :"
-                        placeholder="Enter game start time"
-                        className="mb-4 mr-2"
-                        defaultValue=""
-                        format="hh:mm a"
+                        type="text"
+                        label="Start Time:"
+                        placeholder="00:00 AM/PM"
+                        className="mb-4"
                         {...register("starttime", { required: true })}
                         onChange={handleStartTimeChange}
                     />
                     <Input
-                        label="End Time :"
-                        placeholder="Enter game end time"
+                        type="text"
+                        label="End Time:"
+                        placeholder="00:00 AM/PM"
                         className="mb-4"
-                        defaultValue=""
-                        format="hh:mm a"
                         {...register("endtime", { required: true })}
                         onChange={handleEndTimeChange}
                     />

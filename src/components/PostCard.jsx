@@ -11,6 +11,43 @@ function PostCard({ $id, featuredImage, title, gamenumber, starttime, endtime, c
       .join('')
     : '★★★★★★★★';
 
+
+  const formatEndTime = (endtime) => {
+    if (!endtime) {
+      return "No time available";
+    }
+
+
+    const date = new Date(endtime);
+
+
+    const options = {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    };
+
+    return date.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", ...options });
+  };
+
+
+  const formatStartTime = (starttime) => {
+    if (!starttime) {
+      return "No time available";
+    }
+
+    const date = new Date(starttime);
+    const options = {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    };
+
+    return date.toLocaleString("en-IN", { timeZone: "Asia/Kolkata", ...options });
+  };
+
   return (
     <Link to={`/post/${$id}`}>
       <div className='w-full h-full bg-gray-100 rounded-xl p-4'>
@@ -22,8 +59,12 @@ function PostCard({ $id, featuredImage, title, gamenumber, starttime, endtime, c
         <h2 className='game_number_color text-xl font-bold'>{gamenumber}</h2>
         <h2 className='text-xl font-bold text-black mt-2'>Game Time</h2>
         <div className='game_time'>
-          <span className='start_time'>{starttime}</span>
-          <span className='end_time'>{endtime}</span>
+          <span className='start_time'>
+            {starttime ? formatStartTime(starttime) : "Add Time"}
+          </span>
+          <span className='end_time'>
+            {endtime ? formatEndTime(endtime) : "Add Time"}
+          </span>
         </div>
         <h2 className='result_number text-xl font-bold red_text mt-2'>Result: {gameResult ? currentDate : 'No result'}</h2>
         <div className='final_result'>
