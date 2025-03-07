@@ -17,8 +17,7 @@ import {
 const ResultForm = (result) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const games = useSelector((state) => state.result.games);
+  const [selectedDate, setSelectedDate] = useState(new Date()); 
   const results = useSelector((state) => state.result.results);
 
   const [allData, setAllData] = useState(null);
@@ -29,7 +28,7 @@ const ResultForm = (result) => {
   const gameName = watch("gameName");
   const formattedDate = formatDate(selectedDate);
 
-  // Fetch games and results data
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -55,7 +54,7 @@ const ResultForm = (result) => {
     fetchData();
   }, [dispatch]);
 
-  // Fetch and prefill data when gameName or date changes
+
   useEffect(() => {
     if (gameName && formattedDate) {
       const existingResult = results.find(
@@ -68,7 +67,7 @@ const ResultForm = (result) => {
           if (key.endsWith("D")) setValue(key, existingResult[key] || "*");
         });
       } else {
-        // Reset fields if no matching result
+        
         [
           "firstD",
           "secondD",
@@ -129,8 +128,11 @@ const ResultForm = (result) => {
           Update Your Existing Result
         </h2>
         <p className="mt-2 text-center text-base text-black/60">
-          Don&apos;t want to edit the result?&nbsp;
-          <Link className="font-medium text-primary transition-all duration-200 hover:underline">
+          Don&apos;t want to Update the result?&nbsp;
+          <Link
+            to="add-result"
+            className="font-medium text-primary transition-all duration-200 hover:underline"
+          >
             Go to Add Result link
           </Link>
         </p>
@@ -158,7 +160,7 @@ const ResultForm = (result) => {
               />
             </div>
 
-            <div className="edit_result_section gap-2 grid grid-cols-4">
+            <div className="edit_result_section gap-1 grid grid-cols-8">
               {[
                 "firstD",
                 "secondD",
@@ -173,7 +175,7 @@ const ResultForm = (result) => {
                   key={index}
                   type="text"
                   maxLength={1}
-                  placeholder={field.toUpperCase()}
+                  placeholder={field.toLowerCase()}
                   {...register(field)}
                 />
               ))}
@@ -181,7 +183,7 @@ const ResultForm = (result) => {
 
             <Button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+              className="w-full hover:bg-red-700 text-white"
             >
               Update Result
             </Button>

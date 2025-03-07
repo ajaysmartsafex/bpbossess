@@ -81,59 +81,59 @@ export default function Post() {
     };
 
     return post ? (
-        <div className="py-8">
-            <Container>
+      <div className="py-8">
+        <Container>
+          <div className="flex px-3 py-3 gap-3">
+            <div className="flex-col w-full justify-center mb-4 border rounded-xl p-2">
+              <div className="w-full mb-6">
+                <h1 className="text-2xl font-bold">{post.title}</h1>
+              </div>
+              <h2 className="text-xl font-bold text-black">Game Number</h2>
+              <div className="w-full mb-6">
+                <h1 className="text-2xl font-bold">{post.gamenumber}</h1>
+              </div>
+              <h2 className="text-xl font-bold text-black">Game Time</h2>
+              <div className="game_time">
+                <span className="start_time text-sm font-bold">
+                  {formatStartTime(post.starttime)}
+                </span>
+                <span className="end_time text-sm font-bold">
+                  {formatEndTime(post.endtime)}
+                </span>
+              </div>
+              <h2 className="text-xl font-bold text-black">Game Owner</h2>
+              <div className="browser-css">{parse(post.content)}</div>
+              <h2 className="text-xl font-bold red_text">Game Result</h2>
+              <div className="final_resule">
+                <span className="lrnumber text-black">{post.lrnumber}</span>
+                <span className="mrnumber px-2">{post.mrnumber}</span>
+                <span className="rrnumber text-black">{post.rrnumber}</span>
+              </div>
+            </div>
+            <div className="flex flex-col w-full items-center mb-4 border rounded-xl p-2">
+              <img
+                src={appwriteService.getFilePreview(post.featuredImage)}
+                alt={post.title}
+                className="icon_img rounded-xl"
+              />
 
-                <div className="flex px-3 py-3 gap-3">
-                    <div className="flex-col w-full justify-center mb-4 border rounded-xl p-2">
-                        <div className="w-full mb-6">
-                            <h1 className="text-2xl font-bold">{post.title}</h1>
-                        </div>
-                        <h2 className='text-xl font-bold text-black'>Game Number</h2>
-                        <div className="w-full mb-6">
-                            <h1 className="text-2xl font-bold">{post.gamenumber}</h1>
-                        </div>
-                        <h2 className='text-xl font-bold text-black'>Game Time</h2>
-                        <div className='game_time'>
-                            <span className='start_time'>{formatStartTime(post.starttime)}</span>
-                            <span className='end_time'>{formatEndTime(post.endtime)}</span>
-                        </div>
-                        <h2 className='text-xl font-bold text-black'>Game Owner</h2>
-                        <div className="browser-css">
-                            {parse(post.content)}
-                        </div>
-                        <h2 className='text-xl font-bold red_text'>Game Result</h2>
-                        <div className="final_resule">
-                            <span className='lrnumber text-black'>{post.lrnumber}</span>
-                            <span className='mrnumber px-2'>{post.mrnumber}</span>
-                            <span className='rrnumber text-black'>{post.rrnumber}</span>
-                        </div>
-                    </div>
-                    <div className="flex flex-col w-full items-center mb-4 border rounded-xl p-2">
-                        <img
-                            src={appwriteService.getFilePreview(post.featuredImage)}
-                            alt={post.title}
-                            className="icon_img rounded-xl"
-                        />
+              {/* Ensure isAuthor is correctly set before showing buttons */}
 
-                        {/* Ensure isAuthor is correctly set before showing buttons */}
-
-                        {isAuthor && (
-                            <div className="edit_delete_cont justify-start mt-20">
-                                <Link to={`/edit-post/${post.$id}`}>
-                                    <Button bgColor="bg-green-500" className="mr-3">
-                                        Edit
-                                    </Button>
-                                </Link>
-                                <Button bgColor="bg-red-500" onClick={deleteGame}>
-                                    Delete
-                                </Button>
-                            </div>
-                        )}
-                    </div>
+              {isAuthor && (
+                <div className="edit_delete_cont justify-start mt-20">
+                  <Link to={`/edit-post/${post.$id}`}>
+                    <Button bgColor="bg-green-500" className="mr-3">
+                      Edit
+                    </Button>
+                  </Link>
+                  <Button bgColor="bg-red-500" onClick={deleteGame}>
+                    Delete
+                  </Button>
                 </div>
-
-            </Container>
-        </div>
+              )}
+            </div>
+          </div>
+        </Container>
+      </div>
     ) : null;
 }
