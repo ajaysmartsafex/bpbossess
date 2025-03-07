@@ -70,7 +70,7 @@ const EditResultDetail = () => {
                         fourD: result.fourD || "*",
                         fiveD: result.fiveD || "*",
                         sixD: result.sixD || "*",
-                        seveenD: result.seveenD || "*",
+                        sevenD: result.sevenD || "*",
                         eightD: result.eightD || "*",
                     });
 
@@ -87,7 +87,7 @@ const EditResultDetail = () => {
                                 fourD: "*",
                                 fiveD: "*",
                                 sixD: "*",
-                                seveenD: "*",
+                                sevenD: "*",
                                 eightD: "*",
                             });
                         }
@@ -158,7 +158,7 @@ const EditResultDetail = () => {
                                                                 <div key={`right-${week}-${day}-${index}`}>
                                                                     {results.map(result => (
                                                                         <div key={result.id}>
-                                                                            {[result.sixD, result.seveenD, result.eightD]
+                                                                            {[result.sixD, result.sevenD, result.eightD]
                                                                                 .map(d => d || "*")
                                                                                 .join('')}
                                                                         </div>

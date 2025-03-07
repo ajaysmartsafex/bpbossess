@@ -6,7 +6,7 @@ import parse from "html-react-parser";
 function PostCard({ $id, featuredImage, title, gamenumber, starttime, endtime, content, gameResult, currentDate, gameName }) {
   const displayNumbers = gameResult
     ? [gameResult.firstD, gameResult.secondD, gameResult.thirdD, gameResult.fourD,
-    gameResult.fiveD, gameResult.sixD, gameResult.seveenD, gameResult.eightD]
+    gameResult.fiveD, gameResult.sixD, gameResult.sevenD, gameResult.eightD]
       .map(num => num || '★')
       .join('')
     : '★★★★★★★★';

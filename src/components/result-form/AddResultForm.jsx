@@ -40,7 +40,7 @@ const AddResultForm = (result) => {
             fourD: result?.fourD || "",
             fiveD: result?.fiveD || "",
             sixD: result?.sixD || "",
-            seveenD: result?.seveenD || "",
+            sevenD: result?.sevenD || "",
             eightD: result?.eightD || "",
 
         },
@@ -223,11 +223,11 @@ const AddResultForm = (result) => {
                                     />
                                     <Input
                                         placeholder="N-7"
-                                        {...register("seveenD", { required: false })}
+                                        {...register("sevenD", { required: false })}
                                         defaultValue=""
                                         type="text"
                                         maxLength={1}
-                                        onChange={handleResultDigitChange("seveenD")}
+                                        onChange={handleResultDigitChange("sevenD")}
                                     />
                                     <Input
                                         placeholder="N-8"

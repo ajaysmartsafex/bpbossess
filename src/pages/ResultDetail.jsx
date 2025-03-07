@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { setResults } from "../store/resultSlice";
 import appwriteResult from "../appwrite/result";
 import { Container } from "../components/index";
@@ -24,7 +24,6 @@ const ResultDetail = () => {
     }, []);
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const { gameName: slug } = useParams();
     const gameName = decodeURIComponent(slug);
@@ -35,7 +34,7 @@ const ResultDetail = () => {
     useEffect(() => {
         const fetchResults = async () => {
             try {
-                const response = await appwriteResult.getResults();
+                const response = await appwriteResult.getResults(gameName);                
                 if (response?.documents) {
                     dispatch(setResults(response.documents));
                 } else {
@@ -74,7 +73,7 @@ const ResultDetail = () => {
                         fourD: result.fourD || "*",
                         fiveD: result.fiveD || "*",
                         sixD: result.sixD || "*",
-                        seveenD: result.seveenD || "*",
+                        sevenD: result.sevenD || "*",
                         eightD: result.eightD || "*",
                     });
 
@@ -91,7 +90,7 @@ const ResultDetail = () => {
                                 fourD: "*",
                                 fiveD: "*",
                                 sixD: "*",
-                                seveenD: "*",
+                                sevenD: "*",
                                 eightD: "*",
                             });
                         }
@@ -107,72 +106,80 @@ const ResultDetail = () => {
     }, [gameName, results]);
 
     return (
-        <div className="py-8">
-            <Container>
-                <h2 className="text-xl font-bold mb-4 uppercase">{gameName} PANEL CHART</h2>
-                {Object.keys(groupedResults).length > 0 ? (
-                    <table className="w-full border-collapse border border-gray-400">
-                        <thead>
-                            <tr className="bg-gray-200">
-                                <th className="border border-gray-400 px-4 py-2">Date</th>
-                                {daysOfWeek.map((day) => (
-                                    <th key={day} className="border border-gray-400 px-4 py-2">{day}</th>
+      <div className="py-8">
+        <Container>
+          <h2 className="text-xl font-bold mb-4 uppercase">
+            {gameName} PANEL CHART
+          </h2>
+          
+          {Object.keys(groupedResults).length > 0 ? (
+            <table className="w-full border-collapse border border-gray-400">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="border border-gray-400 px-4 py-2">Date</th>
+                  {daysOfWeek.map((day) => (
+                    <th key={day} className="border border-gray-400 px-4 py-2">
+                      {day}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(groupedResults).map(([week, data]) => (
+                  <React.Fragment key={week}>
+                    <tr className="bg-gray-100">
+                      <td className="border border-gray-400 px-4 py-2 font-bold text-center">
+                        {data.startDate} <br /> to <br /> {data.endDate}
+                      </td>
+                      {daysOfWeek.map((day) => (
+                        <td
+                          key={`${week}-${day}`}
+                          className="border border-gray-400 px-4 py-2 text-center"
+                        >
+                          {data.days[day]?.length > 0 ? (
+                            <div className="grid grid-cols-3 gap-2 text-center w-full">
+                              <div className="left-digits flex flex-col items-center">
+                                {data.days[day].map((entry, index) => (
+                                  <div key={`left-${week}-${day}-${index}`}>
+                                    <p>{entry.firstD}</p>
+                                    <p>{entry.secondD}</p>
+                                    <p>{entry.thirdD}</p>
+                                  </div>
                                 ))}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {Object.entries(groupedResults).map(([week, data]) => (
-                                <React.Fragment key={week}>
-                                    <tr className="bg-gray-100">
-                                        <td className="border border-gray-400 px-4 py-2 font-bold text-center">
-                                            {data.startDate} <br /> to <br /> {data.endDate}
-                                        </td>
-                                        {daysOfWeek.map((day) => (
-                                            <td key={`${week}-${day}`} className="border border-gray-400 px-4 py-2 text-center">
-                                                {data.days[day]?.length > 0 ? (
-                                                    <div className="grid grid-cols-3 gap-2 text-center w-full">
-                                                        <div className="left-digits flex flex-col items-center">
-                                                            {data.days[day].map((entry, index) => (
-                                                                <div key={`left-${week}-${day}-${index}`}>
-                                                                    <p>{entry.firstD}</p>
-                                                                    <p>{entry.secondD}</p>
-                                                                    <p>{entry.thirdD}</p>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                        <div className="mid-digits font-bold flex items-center justify-center min-h-[60px]">
-                                                            {data.days[day].map((entry, index) => (
-                                                                <div key={`mid-${week}-${day}-${index}`}>
-                                                                    <span>{entry.fourD}</span>
-                                                                    <span>{entry.fiveD}</span>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                        <div className="right-digits flex flex-col items-center">
-                                                            {data.days[day].map((entry, index) => (
-                                                                <div key={`right-${week}-${day}-${index}`}>
-                                                                    <p>{entry.sixD}</p>
-                                                                    <p>{entry.seveenD}</p>
-                                                                    <p>{entry.eightD}</p>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                ) : (
-                                                    "*"
-                                                )}
-                                            </td>
-                                        ))}
-                                    </tr>
-                                </React.Fragment>
-                            ))}
-                        </tbody>
-                    </table>
-                ) : (
-                    <p>No results available</p>
-                )}
-            </Container>
-        </div>
+                              </div>
+                              <div className="mid-digits font-bold flex items-center justify-center min-h-[60px]">
+                                {data.days[day].map((entry, index) => (
+                                  <div key={`mid-${week}-${day}-${index}`}>
+                                    <span>{entry.fourD}</span>
+                                    <span>{entry.fiveD}</span>
+                                  </div>
+                                ))}
+                              </div>
+                              <div className="right-digits flex flex-col items-center">
+                                {data.days[day].map((entry, index) => (
+                                  <div key={`right-${week}-${day}-${index}`}>
+                                    <p>{entry.sixD}</p>
+                                    <p>{entry.sevenD}</p>
+                                    <p>{entry.eightD}</p>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ) : (
+                            "*"
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  </React.Fragment>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p>No results available</p>
+          )}
+        </Container>
+      </div>
     );
 };
 

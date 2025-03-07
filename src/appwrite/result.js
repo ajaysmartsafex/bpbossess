@@ -13,7 +13,7 @@ export class Result {
         this.databases = new Databases(this.client);
     }
 
-    async createOrUpdateResult({ gameName, date, firstD, secondD, thirdD, fourD, fiveD, sixD, seveenD, eightD }) {
+    async createOrUpdateResult({ gameName, date, firstD, secondD, thirdD, fourD, fiveD, sixD, sevenD, eightD }) {
         if (!gameName || !date) {
             console.error("Missing required fields: gameName or date");
             return null;
@@ -34,13 +34,12 @@ export class Result {
             if (existingResults.total > 0) {
                 const existingResult = existingResults.documents[0];
                 console.log("Result already exists, updating:", existingResult);
-
-                // Update existing result
+               
                 const updatedResponse = await this.databases.updateDocument(
                     conf.appwriteDatabaseId,
                     conf.appwriteResultCollectionId,
                     existingResult.$id,
-                    { firstD, secondD, thirdD, fourD, fiveD, sixD, seveenD, eightD }
+                    { firstD, secondD, thirdD, fourD, fiveD, sixD, sevenD, eightD }
                 );
                 return updatedResponse;
             } else {
@@ -49,7 +48,7 @@ export class Result {
                     conf.appwriteDatabaseId,
                     conf.appwriteResultCollectionId,
                     ID.unique(),
-                    { gameName, date, firstD, secondD, thirdD, fourD, fiveD, sixD, seveenD, eightD }
+                    { gameName, date, firstD, secondD, thirdD, fourD, fiveD, sixD, sevenD, eightD }
                 );
 
                 console.log("Result created successfully:", response);
@@ -75,18 +74,25 @@ export class Result {
                 conf.appwriteResultCollectionId,
                 [Query.equal("gameName", gameName)]
             );
+            console.log("gameName", response)
             return response.documents.length > 0 ? response.documents[0] : null;
         } catch (error) {
             console.error("Error fetching single result:", error);
         }
     }
 
+
+
+
+
+
     async getResults() {
         try {
             const response = await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
-                conf.appwriteResultCollectionId
-            );
+                conf.appwriteResultCollectionId,
+                [Query.orderDesc("$createdAt")]
+            );       
             return response; // Ensure documents exist
         } catch (error) {
             console.error("Error fetching results:", error);
