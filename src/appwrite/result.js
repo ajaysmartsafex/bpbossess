@@ -33,7 +33,6 @@ export class Result {
 
             if (existingResults.total > 0) {
                 const existingResult = existingResults.documents[0];
-                console.log("Result already exists, updating:", existingResult);
                
                 const updatedResponse = await this.databases.updateDocument(
                     conf.appwriteDatabaseId,
@@ -51,7 +50,6 @@ export class Result {
                     { gameName, date, firstD, secondD, thirdD, fourD, fiveD, sixD, sevenD, eightD }
                 );
 
-                console.log("Result created successfully:", response);
                 const updatedResponse = await this.databases.updateDocument(
                     conf.appwriteDatabaseId,
                     conf.appwriteResultCollectionId,
@@ -74,7 +72,6 @@ export class Result {
                 conf.appwriteResultCollectionId,
                 [Query.equal("gameName", gameName)]
             );
-            console.log("gameName", response)
             return response.documents.length > 0 ? response.documents[0] : null;
         } catch (error) {
             console.error("Error fetching single result:", error);
@@ -91,9 +88,11 @@ export class Result {
             const response = await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
                 conf.appwriteResultCollectionId,
-                [Query.orderDesc("$createdAt")]
-            );       
-            return response; // Ensure documents exist
+                [Query.orderDesc("$createdAt"),
+                Query.limit(1000000)
+                ]
+            );
+            return response // Ensure documents exist
         } catch (error) {
             console.error("Error fetching results:", error);
             return { documents: [] }; // Return empty array to avoid errors

@@ -7,33 +7,29 @@ import "react-datepicker/dist/react-datepicker.css";
 import appwriteResult from "../../appwrite/result";
 import appwriteService from "../../appwrite/config";
 import { useDispatch, useSelector } from 'react-redux';
-import { setResults, addResult, updateResult, setGames } from '../../store/resultSlice'; // Redux action
+import { setResults, addResult, updateResult, setGames } from '../../store/resultSlice';
 
-const AddResultForm = (result) => {
-
+const AddResultForm = (props) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    // Fetch data from Redux store
-    const games = useSelector(state => state.result.games);
-    const results = useSelector(state => state.result.results);
+   
+    const reduxGames = useSelector(state => state.result.games);
+    const reduxResults = useSelector(state => state.result.results);
 
     const [allData, setAllData] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(new Date());
 
+    const formatDate = (date) => date.toISOString().split("T")[0];
 
-
-    const [selectedDate, setSelectedDate] = React.useState(new Date());
-    const formatDate = (date) => {
-        return date.toISOString().split("T")[0]; // Extract only YYYY-MM-DD
-    };
-
-
+   
+    const { result } = props;
 
     const { register, handleSubmit, setValue } = useForm({
         defaultValues: {
             title: result?.title || "",
             gameName: result?.gameName || "",
-            date: result?.date ? new Date(results.date) : new Date(),
+            date: result?.date ? new Date(result.date) : new Date(),
             firstD: result?.firstD || "",
             secondD: result?.secondD || "",
             thirdD: result?.thirdD || "",
@@ -42,41 +38,38 @@ const AddResultForm = (result) => {
             sixD: result?.sixD || "",
             sevenD: result?.sevenD || "",
             eightD: result?.eightD || "",
-
         },
     });
 
     useEffect(() => {
         const mergedData = async () => {
             try {
-
                 const [gameData, resultData] = await Promise.all([
                     appwriteService.getGames(),
                     appwriteResult.getResults()
                 ]);
 
-
-                const resultsArray = resultData?.documents || [];
+               
                 const gamesArray = gameData?.documents || [];
+                const resultsArray = resultData?.documents || [];
 
-
-                dispatch(setResults(resultsArray));
+              
                 dispatch(setGames(gamesArray));
+                dispatch(setResults(resultsArray));
 
-                const completeData = {
-                    formattedGames: games,
-                    formattedResults: results
-                };
-
-                setAllData(completeData);
+                
+                setAllData({
+                    formattedGames: gamesArray,
+                    formattedResults: resultsArray,
+                });
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
+        };
 
-        }
         mergedData();
-    }, [allData])
-
+        
+    }, [dispatch]);
 
     const slugTransform = useCallback((value) => {
         if (value && typeof value === "string") {
@@ -87,40 +80,32 @@ const AddResultForm = (result) => {
                 .replace(/\s/g, "-");
         }
         return "";
-    }, [])
+    }, []);
 
-
-    const submit = async (data) => {
+    const submit = async (data) => {        
         data.date = formatDate(selectedDate);
-        const formattedData = {
-            ...data,
-            date: formatDate(selectedDate),
-        };
+        const formattedData = { ...data, date: formatDate(selectedDate) };
 
         try {
             const dbResult = await appwriteResult.createOrUpdateResult(formattedData);
 
             if (dbResult) {
-                // No need to manually find the result — just dispatch the action
                 if (result?.gameId) {
-                    dispatch(updateResult(dbResult)); // Update Redux store
+                    dispatch(updateResult(dbResult));
                 } else {
-                    dispatch(addResult(dbResult)); // Add to Redux store
+                    dispatch(addResult(dbResult));
                 }
-
-                navigate(`/result/${slugTransform(dbResult.gameName)}`); // Redirect after success
+                navigate(`/result/${slugTransform(dbResult.gameName)}`);
             }
         } catch (error) {
             console.error("Error saving result:", error);
         }
-
     };
 
     const handleResultDigitChange = (fieldName) => (e) => {
         const value = e.target.value.replace(/\D/g, "").slice(0, 1);
         setValue(fieldName, value);
     };
-
 
     return (
       <div className="flex items-center justify-center w-full py-8">
@@ -129,7 +114,7 @@ const AddResultForm = (result) => {
             Add Game Result
           </h2>
           <p className="mt-2 text-center text-base text-black/60">
-            Do you want any Update in Result ?&nbsp;
+            Do you want any Update in Result?&nbsp;
             <Link
               to="/edit-result"
               className="font-medium text-primary transition-all duration-200 hover:underline"
@@ -157,9 +142,9 @@ const AddResultForm = (result) => {
                   selected={selectedDate}
                   onChange={(date) => {
                     setSelectedDate(date);
-                    setValue("createdate", formatDate(date)); // Update form state
+                    setValue("createdate", formatDate(date));
                   }}
-                  maxDate={new Date()} // Restrict future dates
+                  maxDate={new Date()}
                   showYearDropdown
                   dateFormat="yyyy-MM-dd"
                   className="border rounded p-2 w-full"
@@ -172,25 +157,21 @@ const AddResultForm = (result) => {
                   <div className="flex justify-between columns-12">
                     <Input
                       placeholder="N-1"
-                      {...register("firstD", { required: false })}
-                      defaultValue=""
+                      {...register("firstD")}
                       type="text"
                       maxLength={1}
                       onChange={handleResultDigitChange("firstD")}
                     />
-
                     <Input
                       placeholder="N-2"
-                      {...register("secondD", { required: false })}
-                      defaultValue=""
+                      {...register("secondD")}
                       type="text"
                       maxLength={1}
                       onChange={handleResultDigitChange("secondD")}
                     />
                     <Input
                       placeholder="N-3"
-                      {...register("thirdD", { required: false })}
-                      defaultValue=""
+                      {...register("thirdD")}
                       type="text"
                       maxLength={1}
                       onChange={handleResultDigitChange("thirdD")}
@@ -202,16 +183,14 @@ const AddResultForm = (result) => {
                   <div className="flex justify-between columns-12">
                     <Input
                       placeholder="N-4"
-                      {...register("fourD", { required: false })}
-                      defaultValue=""
+                      {...register("fourD")}
                       type="text"
                       maxLength={1}
                       onChange={handleResultDigitChange("fourD")}
                     />
                     <Input
                       placeholder="N-5"
-                      {...register("fiveD", { required: false })}
-                      defaultValue=""
+                      {...register("fiveD")}
                       type="text"
                       maxLength={1}
                       onChange={handleResultDigitChange("fiveD")}
@@ -223,24 +202,21 @@ const AddResultForm = (result) => {
                   <div className="flex justify-between columns-12">
                     <Input
                       placeholder="N-6"
-                      {...register("sixD", { required: false })}
-                      defaultValue=""
+                      {...register("sixD")}
                       type="text"
                       maxLength={1}
                       onChange={handleResultDigitChange("sixD")}
                     />
                     <Input
                       placeholder="N-7"
-                      {...register("sevenD", { required: false })}
-                      defaultValue=""
+                      {...register("sevenD")}
                       type="text"
                       maxLength={1}
                       onChange={handleResultDigitChange("sevenD")}
                     />
                     <Input
                       placeholder="N-8"
-                      {...register("eightD", { required: false })}
-                      defaultValue=""
+                      {...register("eightD")}
                       type="text"
                       maxLength={1}
                       onChange={handleResultDigitChange("eightD")}
@@ -260,10 +236,6 @@ const AddResultForm = (result) => {
         </div>
       </div>
     );
+};
 
-
-}
-
-export default AddResultForm
-
-
+export default AddResultForm;
