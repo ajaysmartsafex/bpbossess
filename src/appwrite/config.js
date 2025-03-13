@@ -109,7 +109,10 @@ export class Service {
             const response = await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
-                [Query.equal("status", ["active"])] // Fetch only active games
+                [
+                    Query.equal("status", ["active"]),
+                    Query.limit(1000000)
+                ] // Fetch only active games
             );
             return response; // Ensure documents exist
         } catch (error) {

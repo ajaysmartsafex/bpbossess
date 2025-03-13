@@ -18,7 +18,7 @@ export class Result {
             console.error("Missing required fields: gameName or date");
             return null;
         }
-
+        const formattedDate = new Date(date).toISOString().split('T')[0];
         try {
 
             // Check if result already exists for this game and date
@@ -27,7 +27,7 @@ export class Result {
                 conf.appwriteResultCollectionId,
                 [
                     Query.equal('gameName', gameName),
-                    Query.equal('date', date)
+                    Query.equal('date', formattedDate)
                 ]
             );
 
@@ -79,17 +79,14 @@ export class Result {
     }
 
 
-
-
-
-
     async getResults() {
         try {
             const response = await this.databases.listDocuments(
                 conf.appwriteDatabaseId,
                 conf.appwriteResultCollectionId,
-                [Query.orderDesc("$createdAt"),
-                Query.limit(1000000)
+                [
+                    Query.orderDesc("$createdAt"),
+                    Query.limit(1000000)
                 ]
             );
             return response // Ensure documents exist
