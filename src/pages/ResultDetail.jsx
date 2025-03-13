@@ -5,13 +5,13 @@ import { setResults } from "../store/resultSlice";
 import appwriteResult from "../appwrite/result";
 import { Container } from "../components/index";
 import {
+  startOfWeek,
+  endOfWeek,
+  getWeek,
+  getYear,
   format,
   parseISO,
-  getISOWeek,
-  getYear,
-  getDay,
-  startOfISOWeek,
-  endOfISOWeek,
+  addDays,
 } from "date-fns";
 
 const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -29,12 +29,11 @@ const ResultDetail = () => {
   }, []);
 
   const dispatch = useDispatch();
-
   const { gameName: slug } = useParams();
   const gameName = decodeURIComponent(slug);
-
   const results = useSelector((state) => state.result?.results || []);
   const [groupedResults, setGroupedResults] = useState({});
+
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -62,18 +61,20 @@ const ResultDetail = () => {
       if (filteredResults.length > 0) {
         const grouped = filteredResults.reduce((acc, result) => {
           const date = parseISO(result.date);
-          const week = getISOWeek(date);
-          const year = getYear(date);
-          const weekKey = `${year}-${week}`;
-          const startDate = format(startOfISOWeek(date), "dd-MM-yyyy");
-          const endDate = format(endOfISOWeek(date), "dd-MM-yyyy");
-          const dayIndex = (getDay(date) + 6) % 7;
-          const dayName = daysOfWeek[dayIndex] || "Mon";
-
+          const startOfWeekDate = startOfWeek(date, { weekStartsOn: 1 });
+          const endOfWeekDate = endOfWeek(date, { weekStartsOn: 1 });
+          const midWeekDate = addDays(startOfWeekDate, 3);
+          const weekYear = getYear(midWeekDate);
+          const week = getWeek(startOfWeekDate, { weekStartsOn: 1 });
+          const weekKey = `${weekYear}-${week}`;
+          const startDate = format(startOfWeekDate, "dd-MM-yyyy");
+          const endDate = format(endOfWeekDate, "dd-MM-yyyy");
           if (!acc[weekKey]) {
             acc[weekKey] = { startDate, endDate, days: {} };
             daysOfWeek.forEach((day) => (acc[weekKey].days[day] = []));
           }
+          const dayIndex = (date.getDay() + 6) % 7; // Shift Sunday to end
+          const dayName = daysOfWeek[dayIndex] || "Mon";
 
           acc[weekKey].days[dayName].push({
             firstD: result.firstD || "*",
@@ -119,6 +120,7 @@ const ResultDetail = () => {
      const dateB = parseISO(b[1].startDate.split("-").reverse().join("-"));
      return dateB - dateA;
    });
+
 
   return (
     <div className="py-8">
