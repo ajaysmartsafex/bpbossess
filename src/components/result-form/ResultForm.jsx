@@ -175,8 +175,9 @@ const ResultForm = (result) => {
                   key={index}
                   type="text"
                   maxLength={1}
-                  placeholder={field.toLowerCase()}
+                  placeholder={`N-${index + 1}`}
                   {...register(field)}
+                  className="text-center"
                 />
               ))}
             </div>

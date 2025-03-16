@@ -1,133 +1,233 @@
 main {
-    z-index: 100;
-    position: relative;
+  z-index: 100;
+  position: relative;
 }
 
 .logo {
-    max-width: 50px;
-    border-radius: 30px;
-    padding: 5px;
-    height: 50px;
-    background: rgb(241, 6, 109);
-    background: linear-gradient(90deg, rgba(241, 6, 109, 1) 0%, rgba(229, 52, 241, 1) 13%, rgba(255, 209, 0, 1) 100%);
+  max-width: 50px;
+  border-radius: 30px;
+  padding: 5px;
+  height: 50px;
+  background: rgb(241, 6, 109);
+  background: linear-gradient(
+    90deg,
+    rgba(241, 6, 109, 1) 0%,
+    rgba(229, 52, 241, 1) 13%,
+    rgba(255, 209, 0, 1) 100%
+  );
 
-    .icon {
-        font-size: 30px;
-        margin: -5px;
-        margin-left: 3px;
-        padding-right: 8px;
-    }
+  .icon {
+    font-size: 30px;
+    margin: -5px;
+    margin-left: 3px;
+    padding-right: 8px;
+  }
 
-    .text {
-        font-size: 26px;
-        margin-left: 5px;
-    }
+  .text {
+    font-size: 26px;
+    margin-left: 5px;
+  }
 }
 
 .post-image {
-    max-width: 100px;
-    max-height: 100px;
-    margin: 10px auto;
+  max-width: 100px;
+  max-height: 100px;
+  margin: 10px auto;
 }
 
 .final_resule {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 30px;
-    font-weight: 700;
-    color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  font-weight: 700;
+  color: red;
 }
 
 .final_result_section {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .game_time_section {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .custom_btn {
-    &:hover {
-        background-color: #dc2626;
-    }
+  &:hover {
+    background-color: #dc2626;
+  }
 }
 
 .game_time {
-    display: flex;
-    justify-content: space-around;
-    max-width: 185px;
-    margin: auto;
-    font-weight: 800;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-around;
+  max-width: 185px;
+  margin: auto;
+  font-weight: 800;
+  margin-bottom: 20px;
 }
 
 .red_text {
-    color: red;
+  color: red;
 }
 
 .result_number {
-    color: #880e4f;
+  color: #880e4f;
 }
 
 .game_name_color {
-    color: #00094d;
+  color: #00094d;
 }
 
 .game_number_color {
-    color: #880e4f;
+  color: #880e4f;
 }
 
 .icon_img {
-    max-width: 100px;
-    max-height: fit-content;
+  max-width: 100px;
+  max-height: fit-content;
 }
 
 .edit_delete_cont {
-    display: flex;
+  display: flex;
 }
 
 .date_cont {
-    display: flex;
-    flex-direction: column;
-    align-items: self-start;
-    z-index: 10;
-    position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: self-start;
+  z-index: 10;
+  position: relative;
 }
 
 .edit_result_section {
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .select_game {
-    margin-bottom: -10px;
+  margin-bottom: -10px;
+}
+.footer_section {
+  .mob_footer {
+    flex-wrap: nowrap;
+  }
+  .footer_lists {
+    display: flex;
+    justify-content: space-around;
+    h3 {
+      margin-bottom: 10px !important;
+    }
+  }
 }
 
-
-@media (max-width:768px) {
-    header {
-        position: relative;
-        z-index: 101;
-
-        li {
-            text-align: left;
-            margin-left: 0 !important;
-            color: #fff;
-        }
+@media (max-width: 768px) {
+  #root {
+    padding: 0px;
+  }
+  main {
+    z-index: 100;
+    position: relative;
+    padding: 0 8px;
+    .w-2\/3,
+    .w-1\/3 {
+      width: 50%;
     }
+  }
+  header {
+    position: relative;
+    z-index: 101;
 
-    .main {
-        .flex {
-            display: block !important;
-
-            .w-1\/4 {
-                width: 100%;
-            }
-        }
+    li {
+      text-align: left;
+      margin-left: 0 !important;
+      color: #000;
+      button {
+        padding: 2px 10px !important;
+        margin-bottom: 8px;
+        border-radius: 25px !important;
+      }
     }
+  }
+
+  .main {
+    .flex {
+      display: block !important;
+
+      .w-1\/4 {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 770px) {
+  button.custom_btn {
+    padding: 5px 7px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  table {
+    max-width: 100%;
+    overflow-x: scroll;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0px;
+    // display: block;
+    tbody tr td {
+      width: 55px;
+      font-size: 9px;
+      line-height: normal;
+      padding: 5px !important;
+    }
+    thead tr th {
+      width: 55px;
+      font-size: 9px;
+      line-height: 5px;
+      padding: 5px !important;
+    }
+  }
+
+  .min-h-\[60px\] {
+    min-height: auto !important;
+  }
+  .left-digits {
+    p {
+      font-size: 11px !important;
+      line-height: normal !important;
+    }
+  }
+  .mid-digits {
+    span {
+      font-size: 16px !important;
+      line-height: normal !important;
+    }
+  }
+
+  .right-digits {
+    p {
+      font-size: 11px !important;
+      line-height: normal !important;
+    }
+  }
+  .footer_section {
+    .mob_footer {
+      flex-wrap: wrap !important;
+    }
+    .flex-col {
+      flex-direction: column !important;
+    }
+    .footer_lists {
+      display: flex;
+      justify-content: space-around;
+      h3 {
+        margin-bottom: 10px !important;
+      }
+    }
+  }
 }

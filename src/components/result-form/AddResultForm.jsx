@@ -148,6 +148,7 @@ const AddResultForm = (result) => {
                     type="text"
                     maxLength={1}
                     onChange={handleResultDigitChange("firstD")}
+                    className="text-center"
                   />
                   <Input
                     placeholder="N-2"
@@ -155,6 +156,7 @@ const AddResultForm = (result) => {
                     type="text"
                     maxLength={1}
                     onChange={handleResultDigitChange("secondD")}
+                    className="text-center"
                   />
                   <Input
                     placeholder="N-3"
@@ -162,6 +164,7 @@ const AddResultForm = (result) => {
                     type="text"
                     maxLength={1}
                     onChange={handleResultDigitChange("thirdD")}
+                    className="text-center"
                   />
                 </div>
               </div>
@@ -174,6 +177,7 @@ const AddResultForm = (result) => {
                     type="text"
                     maxLength={1}
                     onChange={handleResultDigitChange("fourD")}
+                    className="text-center"
                   />
                   <Input
                     placeholder="N-5"
@@ -181,6 +185,7 @@ const AddResultForm = (result) => {
                     type="text"
                     maxLength={1}
                     onChange={handleResultDigitChange("fiveD")}
+                    className="text-center"
                   />
                 </div>
               </div>
@@ -193,6 +198,7 @@ const AddResultForm = (result) => {
                     type="text"
                     maxLength={1}
                     onChange={handleResultDigitChange("sixD")}
+                    className="text-center"
                   />
                   <Input
                     placeholder="N-7"
@@ -200,6 +206,7 @@ const AddResultForm = (result) => {
                     type="text"
                     maxLength={1}
                     onChange={handleResultDigitChange("sevenD")}
+                    className="text-center"
                   />
                   <Input
                     placeholder="N-8"
@@ -207,6 +214,7 @@ const AddResultForm = (result) => {
                     type="text"
                     maxLength={1}
                     onChange={handleResultDigitChange("eightD")}
+                    className="text-center"
                   />
                 </div>
               </div>
