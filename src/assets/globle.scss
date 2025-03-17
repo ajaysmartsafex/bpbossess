@@ -90,10 +90,6 @@ main {
   max-height: fit-content;
 }
 
-.edit_delete_cont {
-  display: flex;
-}
-
 .date_cont {
   display: flex;
   flex-direction: column;
@@ -124,7 +120,9 @@ main {
     }
   }
 }
-
+nav li {
+    margin: 0 !important;
+}
 @media (max-width: 768px) {
   #root {
     padding: 0px;
