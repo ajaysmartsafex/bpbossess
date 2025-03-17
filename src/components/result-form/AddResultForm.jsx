@@ -98,12 +98,12 @@ const AddResultForm = (result) => {
 
   return (
     <div className="flex items-center justify-center w-full py-8">
-      <div className="mx-auto w-full max-w-xl bg-gray-100 rounded-xl p-10 border border-black/10">
+      <div className="add_result_form mx-auto w-full max-w-xl bg-gray-100 rounded-xl border border-black/10">
         <h2 className="text-center text-2xl font-bold leading-tight">
           Add Game Result
         </h2>
         <p className="mt-2 text-center text-base text-black/60">
-          Do you want any Update in Result?&nbsp;
+          Do you want any Update in Result?<br/>
           <Link
             to="/edit-result"
             className="font-medium text-primary transition-all duration-200 hover:underline"

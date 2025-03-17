@@ -49,6 +49,14 @@ function Header() {
     },
   ]
 
+  const handleNavItemClick = (slug) => {
+    setActiveItem(slug);
+    navigate(slug);
+    if (window.innerWidth < 768) {
+      // Check if the device is mobile
+      setIsMobileMenuOpen(false); // Close mobile menu when a menu item is clicked
+    }
+  };
 
   return (
     <header className='py-3 shadow bg-red-600 px-3'>
@@ -88,10 +96,7 @@ function Header() {
               item.active ? (
                 <li key={item.name}>
                   <button
-                    onClick={() => {
-                      setActiveItem(item.slug);
-                      navigate(item.slug)
-                    }}
+                    onClick={() => { handleNavItemClick(item.slug) }}
                     className={`inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full ${activeItem === item.slug ? 'bg-white' : ''}`}
                   >{item.name}</button>
                 </li>
