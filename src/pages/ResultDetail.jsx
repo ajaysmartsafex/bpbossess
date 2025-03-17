@@ -11,7 +11,6 @@ import {
   getYear,
   format,
   parseISO,
-  addDays,
 } from "date-fns";
 
 const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -33,7 +32,6 @@ const ResultDetail = () => {
   const gameName = decodeURIComponent(slug);
   const results = useSelector((state) => state.result?.results || []);
   const [groupedResults, setGroupedResults] = useState({});
-
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -63,8 +61,10 @@ const ResultDetail = () => {
           const date = parseISO(result.date);
           const startOfWeekDate = startOfWeek(date, { weekStartsOn: 1 });
           const endOfWeekDate = endOfWeek(date, { weekStartsOn: 1 });
-          const midWeekDate = addDays(startOfWeekDate, 3);
-          const weekYear = getYear(midWeekDate);
+          const weekYear =
+            getYear(startOfWeekDate) === getYear(endOfWeekDate)
+              ? getYear(startOfWeekDate)
+              : getYear(endOfWeekDate);
           const week = getWeek(startOfWeekDate, { weekStartsOn: 1 });
           const weekKey = `${weekYear}-${week}`;
           const startDate = format(startOfWeekDate, "dd-MM-yyyy");
@@ -76,7 +76,7 @@ const ResultDetail = () => {
           const dayIndex = (date.getDay() + 6) % 7; // Shift Sunday to end
           const dayName = daysOfWeek[dayIndex] || "Mon";
 
-          acc[weekKey].days[dayName].push({
+          const entry = {
             firstD: result.firstD || "*",
             secondD: result.secondD || "*",
             thirdD: result.thirdD || "*",
@@ -85,7 +85,17 @@ const ResultDetail = () => {
             sixD: result.sixD || "*",
             sevenD: result.sevenD || "*",
             eightD: result.eightD || "*",
-          });
+          };
+
+          // Prevent duplicate entries
+          const isDuplicate = acc[weekKey].days[dayName].some(
+            (existingEntry) =>
+              JSON.stringify(existingEntry) === JSON.stringify(entry)
+          );
+
+          if (!isDuplicate) {
+            acc[weekKey].days[dayName].push(entry);
+          }
 
           return acc;
         }, {});
@@ -115,12 +125,11 @@ const ResultDetail = () => {
     }
   }, [gameName, results]);
 
-   const sortedWeeks = Object.entries(groupedResults).sort((a, b) => {
-     const dateA = parseISO(a[1].startDate.split("-").reverse().join("-"));
-     const dateB = parseISO(b[1].startDate.split("-").reverse().join("-"));
-     return dateB - dateA;
-   });
-
+  const sortedWeeks = Object.entries(groupedResults).sort((a, b) => {
+    const dateA = parseISO(a[1].startDate.split("-").reverse().join("-"));
+    const dateB = parseISO(b[1].startDate.split("-").reverse().join("-"));
+    return dateB - dateA;
+  });
 
   return (
     <div className="py-8">
